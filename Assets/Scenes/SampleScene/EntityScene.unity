@@ -168,3 +168,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   EnemyPrefab: {fileID: 789490428434022543, guid: f1835206111eba6419834824ef1a6f01, type: 3}
+  Player: {fileID: 0}

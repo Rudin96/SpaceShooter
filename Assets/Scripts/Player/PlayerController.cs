@@ -3,7 +3,6 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] private Camera _camera;
     [SerializeField] private Weapon _weapon;
 
     [SerializeField] private float _movementSpeed = 150.0f;
@@ -12,6 +11,7 @@ public class PlayerController : MonoBehaviour
     private Vector2 _lookVector;
     private Transform _selfTransform;
     private PlayerInput _playerInput;
+    private Camera _camera;
 
     private Mouse _mouse;
 
@@ -21,6 +21,7 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         _playerInput = GetComponent<PlayerInput>();
+        _camera = CameraSingleton.Instance;
     }
 
     private void Start()
