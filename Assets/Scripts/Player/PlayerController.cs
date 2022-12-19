@@ -21,13 +21,13 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         _playerInput = GetComponent<PlayerInput>();
-        _camera = CameraSingleton.Instance;
     }
 
     private void Start()
     {
         _selfTransform= GetComponent<Transform>();
         _mouse = Mouse.current;
+        _camera = CameraSingleton.Instance;
     }
 
     private void Update()

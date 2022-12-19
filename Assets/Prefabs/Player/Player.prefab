@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4828728682624323884}
-  - component: {fileID: 4828728682624323885}
   m_Layer: 0
   m_Name: Weapon
   m_TagString: Untagged
@@ -32,20 +31,6 @@ Transform:
   m_Father: {fileID: 4828728682628582764}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4828728682624323885
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4828728682624323887}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67b2ad5b09b03624a9657f632ccbf841, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _projectilePrefab: {fileID: 4127603145474535502, guid: 9eb4d1dcb67aa954d86b35f4799bbc5b, type: 3}
-  _timeBetweenShots: 0.05
 --- !u!1 &4828728682628582763
 GameObject:
   m_ObjectHideFlags: 0
@@ -57,7 +42,6 @@ GameObject:
   - component: {fileID: 4828728682628582764}
   - component: {fileID: 4828728682628582767}
   - component: {fileID: 4828728682628582766}
-  - component: {fileID: 4828728682628582761}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -160,7 +144,7 @@ MonoBehaviour:
   m_ActionEvents:
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4828728682628582761}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
         m_MethodName: SetInputVector
         m_Mode: 0
@@ -176,7 +160,7 @@ MonoBehaviour:
     m_ActionName: Player/Move[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4828728682624323885}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Weapon, Assembly-CSharp
         m_MethodName: HandleShoot
         m_Mode: 0
@@ -195,18 +179,3 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!114 &4828728682628582761
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4828728682628582763}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6e53b7b327bed7e48a7e576c329aa17d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _camera: {fileID: 0}
-  _weapon: {fileID: 4828728682624323885}
-  _movementSpeed: 20

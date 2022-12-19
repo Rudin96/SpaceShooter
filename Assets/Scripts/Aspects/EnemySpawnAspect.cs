@@ -1,12 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using Unity.Entities;
-using UnityEngine;
+using Unity.Mathematics;
+using Unity.Transforms;
 
 readonly partial struct EnemySpawnAspect : IAspect
 {
-    readonly RefRO<Spawner> m_EnemySpawner;
+    readonly RefRO<EnemySpawner> m_EnemySpawner;
 
     public Entity EnemyPrefab => m_EnemySpawner.ValueRO.EnemyPrefab;
+
     public Entity EnemySpawnTransform => m_EnemySpawner.ValueRO.EnemySpawnTransform;
 }

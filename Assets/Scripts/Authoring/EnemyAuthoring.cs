@@ -1,10 +1,9 @@
 using Unity.Entities;
 using Unity.Mathematics;
+using UnityEngine;
 
-class EnemyAuthoring : UnityEngine.MonoBehaviour
+public class EnemyAuthoring : MonoBehaviour
 {
-    public UnityEngine.Transform PlayerPrefab;
-
     class EnemyBaker : Baker<EnemyAuthoring>
     {
         public override void Bake(EnemyAuthoring authoring)
@@ -17,4 +16,6 @@ class EnemyAuthoring : UnityEngine.MonoBehaviour
 struct Enemy : IComponentData
 {
     public float3 Speed;
+    public float3 StartPos;
+    public float3 Destination;
 }
