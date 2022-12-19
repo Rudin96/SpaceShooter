@@ -16,7 +16,7 @@ public class EnemySpawnAuthoring : MonoBehaviour
             {
                 EnemyPrefab = GetEntity(authoring.EnemyPrefab),
                 EnemySpawnTransform = GetEntity(authoring.transform),
-                PlayerTransform = GetEntity(authoring.PlayerTransform)
+                PlayerTransform = GetEntity(authoring.PlayerTransform.transform)
             });
         }
     }

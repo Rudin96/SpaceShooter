@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using Unity.Burst;
 using Unity.Entities;
 using Unity.Mathematics;
@@ -15,9 +13,10 @@ partial struct EnemyJob : IJobEntity
     {
         enemy.Position += enemy.Speed * DeltaTime;
 
-        var sqrlength = math.lengthsq(enemy.Position - enemy.StartPosition);
+        var playerDistanceLength = math.length(enemy.Position - enemy.Destination);
+        var outOfBoundsLength = math.length(enemy.Position - enemy.StartPosition);
 
-        if(sqrlength > 10.0f)
+        if(playerDistanceLength < 1.0f || outOfBoundsLength > 30.0f)
         {
             ECB.DestroyEntity(chunkIndex, enemy.Self);
         }
@@ -25,7 +24,7 @@ partial struct EnemyJob : IJobEntity
 }
 
 [BurstCompile]
-partial struct CannonBallSystem : ISystem
+partial struct EnemyMoveSystem : ISystem
 {
     [BurstCompile]
     public void OnCreate(ref SystemState state)

@@ -9,4 +9,6 @@ readonly partial struct EnemySpawnAspect : IAspect
     public Entity EnemyPrefab => m_EnemySpawner.ValueRO.EnemyPrefab;
 
     public Entity EnemySpawnTransform => m_EnemySpawner.ValueRO.EnemySpawnTransform;
+
+    public Entity Destination => m_EnemySpawner.ValueRO.PlayerTransform;
 }

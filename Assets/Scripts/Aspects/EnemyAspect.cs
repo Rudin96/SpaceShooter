@@ -21,6 +21,11 @@ readonly partial struct EnemyAspect : IAspect
         get => Enemy.ValueRO.StartPos;
     }
 
+    public float3 Destination
+    {
+        get => Enemy.ValueRO.Destination;
+    }
+
     public float3 Speed
     {
         get => Enemy.ValueRO.Speed;
