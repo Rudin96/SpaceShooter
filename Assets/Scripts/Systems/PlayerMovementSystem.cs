@@ -1,46 +1,32 @@
 using Unity.Burst;
 using Unity.Entities;
-using Unity.Mathematics;
+using Unity.Collections;
 using Unity.Transforms;
+using Unity.Mathematics;
+using System.Diagnostics;
+using System.Linq;
+using UnityEngine;
 
-[BurstCompile]
-partial struct PlayerMovementSystem : ISystem
+partial class PlayerMovementSystem : SystemBase
 {
-    [BurstCompile]
-    public void OnCreate(ref SystemState state)
-    {
+    EntityQuery PlayerQuery;
 
+    protected override void OnCreate()
+    {
+        PlayerQuery = GetEntityQuery(typeof(Player));
+        RequireForUpdate(PlayerQuery);
     }
 
-    [BurstCompile]
-    public void OnDestroy(ref SystemState state)
+    protected override void OnUpdate()
     {
-
-    }
-
-    [BurstCompile]
-    public void OnUpdate(ref SystemState state)
-    {
-        var ecbSingleton = SystemAPI.GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>();
-        var ecb = ecbSingleton.CreateCommandBuffer(state.WorldUnmanaged);
-        var playerMovementJob = new PlayerMovementJob
+        foreach (var transform in SystemAPI.Query<TransformAspect>().WithAll<Player>())
         {
-            DeltaTime = SystemAPI.Time.DeltaTime,
-            ECB = ecb.AsParallelWriter()
-        };
-
-        playerMovementJob.Schedule();
-    }
-}
-
-[BurstCompile]
-partial struct PlayerMovementJob : IJobEntity
-{
-    public float DeltaTime;
-    public EntityCommandBuffer.ParallelWriter ECB;
-
-    void Execute([ChunkIndexInQuery]int chunkIndex, ref PlayerAspect playerAspect)
-    {
-        playerAspect.Position += new float3(0.0f, 1.0f, 0.0f) * 20.0f * DeltaTime;
+            var players = PlayerQuery.ToEntityArray(Allocator.Temp);
+            var playerSpeed = SystemAPI.GetComponent<Player>(players[0]).Speed;
+            var mousePosViewport = CameraSingleton.Instance.ScreenToWorldPoint(Input.mousePosition) + Vector3.forward * 10.0f;
+            var mouseDirFromPlayer = new float3(mousePosViewport) - transform.LocalPosition;
+            transform.LocalPosition += new float3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), 0.0f) * playerSpeed * SystemAPI.Time.DeltaTime;
+            transform.LocalRotation = quaternion.LookRotation(Vector3.forward, mouseDirFromPlayer);
+        }
     }
 }

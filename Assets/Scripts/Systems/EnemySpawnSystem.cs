@@ -1,6 +1,7 @@
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
+using Unity.Mathematics;
 using Unity.Rendering;
 using Unity.Transforms;
 
@@ -29,6 +30,7 @@ partial struct EnemySpawnSystem : ISystem
         var ecbSingleton = SystemAPI.GetSingleton<BeginSimulationEntityCommandBufferSystem.Singleton>();
         var ecb = ecbSingleton.CreateCommandBuffer(state.WorldUnmanaged);
 
+
         var enemySpawnJob = new EnemySpawn
         {
             WorldTransformLookup = m_WorldTransformLookup,
@@ -52,11 +54,13 @@ partial struct EnemySpawn : IJobEntity
         var playerLocalToWorldPos = WorldTransformLookup[enemy.Destination];
         var enemyTransform = LocalTransform.FromPosition(spawnLocalToWorld.Position);
 
+
+
         ECB.SetComponent(instance, enemyTransform);
         ECB.SetComponent(instance, new Enemy
         {
             Speed = spawnLocalToWorld.Up() * 10.0f,
-            StartPos = spawnLocalToWorld.Position,
+            StartPos = new float3(10.0f, 0.0f, 0.0f),
             Destination = playerLocalToWorldPos.Position
         });
     }

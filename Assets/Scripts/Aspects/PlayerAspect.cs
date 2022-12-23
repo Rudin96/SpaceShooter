@@ -15,7 +15,7 @@ readonly partial struct PlayerAspect : IAspect
         get => Transform.LocalPosition; set => Transform.LocalPosition = value;
     }
 
-    public float3 Speed
+    public float Speed
     {
         get => Player.ValueRO.Speed; set => Player.ValueRW.Speed = value;
     }

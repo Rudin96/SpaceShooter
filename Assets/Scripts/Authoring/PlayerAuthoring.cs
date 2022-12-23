@@ -1,15 +1,9 @@
 using Unity.Entities;
 using Unity.Mathematics;
-using UnityEngine.InputSystem;
 
 class PlayerAuthoring : UnityEngine.MonoBehaviour
 {
-    private UnityEngine.Vector3 _lookVector;
-    private UnityEngine.Vector3 _moveVector;
-
-    public void SetLookVector(InputAction.CallbackContext callbackContext) { _lookVector = callbackContext.ReadValue<UnityEngine.Vector2>(); }
-    public void SetMoveVector(InputAction.CallbackContext callbackContext) { _moveVector = callbackContext.ReadValue<UnityEngine.Vector2>(); UnityEngine.Debug.Log(_moveVector); }
-
+    [UnityEngine.SerializeField] private float Speed = 10.0f;
     class PlayerBaker : Baker<PlayerAuthoring>
     {
         public override void Bake(PlayerAuthoring playerAuthoring)
@@ -17,7 +11,7 @@ class PlayerAuthoring : UnityEngine.MonoBehaviour
             AddComponent(new Player
             {
                 Position = playerAuthoring.transform.position,
-                Speed = playerAuthoring._moveVector
+                Speed = playerAuthoring.Speed
             });
         }
     }
@@ -26,6 +20,6 @@ class PlayerAuthoring : UnityEngine.MonoBehaviour
 struct Player : IComponentData
 {
     public quaternion Rotation;
-    public float3 Speed;
+    public float Speed;
     public float3 Position;
 }

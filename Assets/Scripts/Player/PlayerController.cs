@@ -44,6 +44,8 @@ public class PlayerController : MonoBehaviour
 
     private void Move(float deltaTime)
     {
+        _inputVector.x = Input.GetAxis("Horizontal");
+        _inputVector.y = Input.GetAxis("Vertical");
         _selfTransform.position += (Vector3)_inputVector * _movementSpeed * deltaTime;
     }
 }
