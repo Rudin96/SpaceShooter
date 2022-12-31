@@ -11,6 +11,8 @@ partial struct EnemyJob : IJobEntity
 
     void Execute([ChunkIndexInQuery] int chunkIndex, ref EnemyAspect enemy)
     {
+        enemy.Speed = math.normalize(enemy.Destination - enemy.Position) * 7.0f;
+
         enemy.Position += enemy.Speed * DeltaTime;
 
         var playerDistanceLength = math.length(enemy.Position - enemy.Destination);

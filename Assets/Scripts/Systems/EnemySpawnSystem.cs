@@ -54,13 +54,10 @@ partial struct EnemySpawn : IJobEntity
         var playerLocalToWorldPos = WorldTransformLookup[enemy.Destination];
         var enemyTransform = LocalTransform.FromPosition(spawnLocalToWorld.Position);
 
-
-
         ECB.SetComponent(instance, enemyTransform);
         ECB.SetComponent(instance, new Enemy
         {
-            Speed = spawnLocalToWorld.Up() * 10.0f,
-            StartPos = new float3(10.0f, 0.0f, 0.0f),
+            StartPos = new float3(0.0f, 0.0f, 0.0f),
             Destination = playerLocalToWorldPos.Position
         });
     }
