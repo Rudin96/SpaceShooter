@@ -34,10 +34,10 @@ partial struct EnemySpawnSystem : ISystem
         var enemySpawnJob = new EnemySpawn
         {
             WorldTransformLookup = m_WorldTransformLookup,
-            ECB = ecb
+            ECB = ecb.AsParallelWriter()
         };
 
-        enemySpawnJob.Schedule();
+        enemySpawnJob.ScheduleParallel();
     }
 }
 
@@ -45,17 +45,17 @@ partial struct EnemySpawnSystem : ISystem
 partial struct EnemySpawn : IJobEntity
 {
     [ReadOnly] public ComponentLookup<WorldTransform> WorldTransformLookup;
-    public EntityCommandBuffer ECB;
+    public EntityCommandBuffer.ParallelWriter ECB;
 
-    void Execute(in EnemySpawnAspect enemy)
+    void Execute([ChunkIndexInQuery]int chunkIndexInQuery, ref EnemySpawnAspect enemy)
     {
-        var instance = ECB.Instantiate(enemy.EnemyPrefab);
+        var instance = ECB.Instantiate(chunkIndexInQuery, enemy.EnemyPrefab);
         var spawnLocalToWorld = WorldTransformLookup[enemy.EnemySpawnTransform];
         var playerLocalToWorldPos = WorldTransformLookup[enemy.Destination];
         var enemyTransform = LocalTransform.FromPosition(spawnLocalToWorld.Position);
 
-        ECB.SetComponent(instance, enemyTransform);
-        ECB.SetComponent(instance, new Enemy
+        ECB.SetComponent(chunkIndexInQuery, instance, enemyTransform);
+        ECB.SetComponent(chunkIndexInQuery, instance, new Enemy
         {
             StartPos = new float3(0.0f, 0.0f, 0.0f),
             Destination = playerLocalToWorldPos.Position
