@@ -33,12 +33,12 @@ partial struct WeaponShootingSystem : ISystem
         _shootingLookup.Update(ref state);
         _transformLookup.Update(ref state);
 
-        if(Input.GetKeyDown(KeyCode.Space))
+        if(Input.GetKeyDown(KeyCode.Mouse0))
         {
             _shooting = true;
         }
 
-        if(Input.GetKeyUp(KeyCode.Space))
+        if (Input.GetKeyUp(KeyCode.Mouse0))
         {
             _shooting = false;
         }

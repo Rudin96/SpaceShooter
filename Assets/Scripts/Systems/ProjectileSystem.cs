@@ -2,16 +2,13 @@ using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
-using Unity.Transforms;
 
 [BurstCompile]
 partial struct ProjectileSystem : ISystem
 {
-
     [BurstCompile]
     public void OnCreate(ref SystemState state)
     {
-
     }
 
     [BurstCompile]
@@ -32,7 +29,28 @@ partial struct ProjectileSystem : ISystem
             DeltaTime = SystemAPI.Time.DeltaTime
         };
 
+        //EntityQuery enemyQuery = World.DefaultGameObjectInjectionWorld.EntityManager.CreateEntityQuery(typeof(Enemy));
+
+        //var projCollisionJob = new ProjectileCollisionJob
+        //{
+        //    ECB = ecb.AsParallelWriter()
+        //};
+
+        //projCollisionJob.ScheduleParallel();
+
         projectileJob.ScheduleParallel();
+    }
+}
+
+[BurstCompile]
+partial struct ProjectileCollisionJob : IJobEntity
+{
+    public EntityCommandBuffer.ParallelWriter ECB;
+    public NativeArray<Entity> Enemies;
+
+    void Execute(ref ProjectileAspect projectile)
+    {
+        UnityEngine.Debug.Log("Collision");
     }
 }
 
