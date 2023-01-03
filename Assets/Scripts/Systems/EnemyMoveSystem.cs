@@ -2,18 +2,20 @@ using Unity.Burst;
 using Unity.Entities;
 using Unity.Mathematics;
 
+[WithAll(typeof(Enemy))]
 [BurstCompile]
 partial struct EnemyJob : IJobEntity
 {
     public EntityCommandBuffer.ParallelWriter ECB;
+    public float3 PlayerPosition;
 
     public float DeltaTime;
 
     void Execute([ChunkIndexInQuery] int chunkIndex, ref EnemyAspect enemy)
     {
-        enemy.Speed = math.normalize(enemy.Destination - enemy.Position) * 7.0f;
+        enemy.Speed = math.normalize(enemy.Destination - enemy.Position);
 
-        enemy.Position += enemy.Speed * DeltaTime;
+        enemy.Position += enemy.Speed * 15.0f * DeltaTime;
 
         var playerDistanceLength = math.length(enemy.Position - enemy.Destination);
         var outOfBoundsLength = math.length(enemy.Position - enemy.StartPosition);

@@ -2,13 +2,13 @@ using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
-using Unity.Rendering;
 using Unity.Transforms;
 
 [BurstCompile]
 partial struct EnemySpawnSystem : ISystem
 {
     ComponentLookup<WorldTransform> m_WorldTransformLookup;
+
 
     [BurstCompile]
     public void OnCreate(ref SystemState state)
@@ -34,7 +34,8 @@ partial struct EnemySpawnSystem : ISystem
         var enemySpawnJob = new EnemySpawn
         {
             WorldTransformLookup = m_WorldTransformLookup,
-            ECB = ecb.AsParallelWriter()
+            ECB = ecb.AsParallelWriter(),
+            RandomSpawn = UnityEngine.Random.Range(-30.0f, 30.0f)
         };
 
         enemySpawnJob.ScheduleParallel();
@@ -47,17 +48,20 @@ partial struct EnemySpawn : IJobEntity
     [ReadOnly] public ComponentLookup<WorldTransform> WorldTransformLookup;
     public EntityCommandBuffer.ParallelWriter ECB;
 
+    public float RandomSpawn;
+
     void Execute([ChunkIndexInQuery]int chunkIndexInQuery, ref EnemySpawnAspect enemy)
     {
         var instance = ECB.Instantiate(chunkIndexInQuery, enemy.EnemyPrefab);
         var spawnLocalToWorld = WorldTransformLookup[enemy.EnemySpawnTransform];
         var playerLocalToWorldPos = WorldTransformLookup[enemy.Destination];
         var enemyTransform = LocalTransform.FromPosition(spawnLocalToWorld.Position);
+        enemyTransform.Position = new float3(RandomSpawn, RandomSpawn, 0.0f);
 
         ECB.SetComponent(chunkIndexInQuery, instance, enemyTransform);
         ECB.SetComponent(chunkIndexInQuery, instance, new Enemy
         {
-            StartPos = new float3(0.0f, 0.0f, 0.0f),
+            StartPos = enemyTransform.Position,
             Destination = playerLocalToWorldPos.Position
         });
     }

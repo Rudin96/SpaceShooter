@@ -33,14 +33,9 @@ partial struct WeaponShootingSystem : ISystem
         _shootingLookup.Update(ref state);
         _transformLookup.Update(ref state);
 
-        if(Input.GetKeyDown(KeyCode.Mouse0))
+        if(Input.GetKeyDown(KeyCode.Mouse0) || Input.GetKeyDown(KeyCode.Mouse1))
         {
             _shooting = true;
-        }
-
-        if (Input.GetKeyUp(KeyCode.Mouse0))
-        {
-            _shooting = false;
         }
 
         var weaponToggleJob = new WeaponToggleJob
@@ -57,6 +52,11 @@ partial struct WeaponShootingSystem : ISystem
 
         weaponToggleJob.ScheduleParallel();
         WeaponShootJob.ScheduleParallel();
+
+        if(Input.GetKeyDown(KeyCode.Mouse0) && _shooting || Input.GetKeyUp(KeyCode.Mouse1))
+        {
+            _shooting = false;
+        }
     }
 }
 
